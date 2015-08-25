@@ -1,0 +1,52 @@
+
+/**********************************************
+//VISTA PARA FONDOS
+//************************************
+//se crea esta vista en el esquema FO
+//************************************
+   CREATE VIEW FOBV_PROY_FO_SU AS
+  SELECT P.ID_PROYECTO ,P.NOMBRE ,b.fk_id_departamento , b.fk_id_municipio ,
+    b.FK_ID_SITIO_UPME ,p.codigo , sum(b.numero_usuarios) numero_usuarios, 
+    sum(cast((P.VALOR_PROYECTO/P.TOTAL_BENEFICIARIOS)*b.numero_usuarios as integer)) valor_proyecto, 
+    p.fecha_radicado ,  p.fk_id_sector , p.fk_id_fondo , p.estado  ,C.CONCEPTO 
+    FROM (
+      select fp.*
+      from (
+        SELECT CODIGO,max(FECHA_RADICADO) ultima_act,max(ID_PROYECTO) IDMAX
+        from FO.FOH_PROYECTOS
+        group by CODIGO
+      ) t,FO.FOH_PROYECTOS fp
+      where t.codigo=fp.codigo  and t.ultima_act=fp.FECHA_RADICADO and t.IDMAX=fp.ID_PROYECTO
+    ) P 
+    inner JOIN  FO.FOB_BENEFICIADOS B ON ( B.FK_ID_PROYECTO=P.ID_PROYECTO)
+    inner JOIN  FO.FOB_CONCEPTOS C ON ( P.FK_ID_CONCEPTO=C.ID_CONCEPTO)
+    and b.numero_usuarios is not null and b.numero_usuarios<>0 and b.FK_ID_SITIO_UPME is not null
+    group by b.fk_id_departamento, b.fk_id_municipio,b.FK_ID_SITIO_UPME,  P.ID_PROYECTO,P.NOMBRE,p.fecha_radicado, p.fk_id_sector,p.fk_id_fondo,p.estado,C.CONCEPTO,p.codigo 
+    order by fk_id_departamento,fk_id_municipio,FK_ID_SITIO_UPME
+	
+	
+//se crea esta vista en la base de datos geografica apuntando al vista creada previamente en FO
+CREATE OR REPLACE FORCE VIEW "VISTA_PROY_FO_SU" ("IDP", "PNOM", "D", "M", "ISU", "COD", "U", "VP", "FE", "FO", "ES", "CON", "SEC") AS 
+select ID_PROYECTO IDP,NOMBRE PNOM,FK_ID_DEPARTAMENTO D,
+FK_ID_MUNICIPIO M,FK_ID_SITIO_UPME ISU,CODIGO COD,NUMERO_USUARIOS U,
+VALOR_PROYECTO VP,FECHA_RADICADO FE,FK_ID_FONDO FO,ESTADO ES,CONCEPTO CON
+,fk_id_sector SEC
+from FOBV_PROY_FO_SU@foupme11;
+ 
+/*************************************
+//VISTA PARA PECOR
+//************************************
+//se crea esta vista en el esquema MU
+CREATE VIEW MUBV_PROY_PCR_SU AS
+select pry.ID_PROYECTO_PECOR,pry.NOMBRE as nombre_proy,vss.VSS_BENEF,vss.DEMANDA_ANUAL,pry.CU_MODIFICADO as cu_proyecto,pry.FECHA_REGISTRO,sit.COD_MPIO,sit.COD_DPTO,sit.ID_CENTRO_POBLADO
+from MUB_PROYECTOS_PECOR pry inner join MUB_PECOR_CP_VSS vss on pry.ID_PROYECTO_PECOR = vss.ID_PROYECTO_PECOR
+inner join BC_DP_SITIOS_UPME sit on sit.ID_CENTRO_POBLADO = vss.ID_CENTRO_POBLADO
+   
+//se crea esta vista en la base de datos geografica apuntando al vista creada previamente en MU
+CREATE OR REPLACE FORCE VIEW "VISTA_PROY_PCR_SU" ("ID", "IDP", "PNOM", "VSS", "DEM", "CU", "FE", "M", "D", "ISU") AS 
+SELECT ID_PROYECTO_PECOR||'-'||ID_CENTRO_POBLADO AS ID,
+ID_PROYECTO_PECOR IDP,nombre_proy PNOM,
+VSS_BENEF VSS,DEMANDA_ANUAL DEM,
+cu_proyecto CU,FECHA_REGISTRO FE,
+COD_MPIO M,COD_DPTO D,ID_CENTRO_POBLADO ISU
+FROM MUBV_PROY_PCR_SU@MUUPME11;

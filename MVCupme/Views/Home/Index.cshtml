@@ -1,0 +1,289 @@
+﻿<div id="map">
+</div>
+<div id="info-pane" class="leaflet-bar"></div>
+<div id="BtnMonstrarConven">
+    <button type="button" class="btn btn-primary btn-sm" id="MostrarConvenciones">
+        <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span> <small id="textlegend">Ocultar</small>
+    </button>
+</div>
+<div class="col-sm-2 col-md-2" id="panel_formulario" style="max-width: 370px; min-width: 320px; ">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"> Gestion De Proyectos.</h3>
+        </div>
+
+        <div class="panel-body">
+            <div>
+                <a class="btn icon-btn btn-info" href="#" id="btnFechaIni">
+                    <span class="glyphicon btn-glyphicon glyphicon-calendar img-circle text-info"></span>
+                    <small id="TextFechaIni">2015-01-01</small>
+                </a>
+                <a class="btn icon-btn btn-info" href="#" id="btnFechaFin">
+                    <span class="glyphicon btn-glyphicon glyphicon-calendar img-circle text-info"></span>
+                    <small id="TextFechaFin">2015-07-15</small>
+                </a>
+                <a class="btn icon-btn btn-danger" href="#" id="btnFondos">
+                    <span class="glyphicon btn-glyphicon glyphicon-remove img-circle text-danger"></span>
+                    <small id="TextFondo">FONDOS</small>
+                </a>
+                <a class="btn icon-btn btn-danger" href="#" id="btnPECOR">
+                    <span class="glyphicon btn-glyphicon glyphicon-remove img-circle text-danger"></span>
+                    <small id="TextPecor">PECOR</small>
+                </a>
+                <a class="btn icon-btn btn-danger" href="#" id="btnDepto">
+                    <span class="glyphicon btn-glyphicon glyphicon-remove img-circle text-danger"></span>
+                    <small id="TextDepto"></small>
+                </a>
+                <a class="btn icon-btn btn-danger" href="#" id="btnMpio">
+                    <span class="glyphicon btn-glyphicon glyphicon-remove img-circle text-danger"></span>
+                    <small id="TextMpio"></small>
+                </a>
+            </div>
+            <div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-9">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="espacios">
+                                
+                                <div class="form-group hide">
+                                    <label>Escala:</label>
+                                    <select class="form-control" id="EscalaMap">
+                                        <option value="Departamento">Deparamento</option>
+                                        <option value="Municipio">Municipio</option>
+                                    </select>
+
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-12 ">
+                                            <input type="search" id="container-input" value="" class="form-control" placeholder="Ingrese busqueda...">
+                                        </div>
+                                        <div id="DeptoLista">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane " id="eventos">
+                                <b><center>TIPO PROYECTO</center></b>
+                                <hr>
+                                <div class="[ form-group ]">
+                                    <input type="checkbox" name="fancy-checkbox-default" id="checkFondos" autocomplete="off" checked />
+                                    <div class="[ btn-group ]">
+                                        <label for="checkFondos" class="[ btn btn-primary ]">
+                                            <span class="[ glyphicon glyphicon-ok ]"></span>
+                                            <span> </span>
+                                        </label>
+                                        <label for="checkFondos" class="[ btn btn-default active ]" style="min-width: 100px;">
+                                            FONDOS
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="[ form-group ]">
+                                    <input type="checkbox" name="fancy-checkbox-primary" id="checkPCR" autocomplete="off" checked />
+                                    <div class="[ btn-group ]">
+                                        <label for="checkPCR" class="[ btn btn-primary ]">
+                                            <span class="[ glyphicon glyphicon-ok ]"></span>
+                                            <span> </span>
+                                        </label>
+                                        <label for="checkPCR" class="[ btn btn-default active ]" style="min-width: 100px;">
+                                            PECOR
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tiempo">
+                                <b><center>RANGO TIEMPO</center></b>
+                                <hr>
+                                <div class="form-group">
+                                    <label>Fecha Inicio</label>
+                                    <div class="input-group date">
+                                        <input type="text" class=" form-control hasdatepicker" id="date_ini" data-container="body" data-toggle="popover" data-trigger="focus" data-animation="true" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha Fin</label>
+                                    <div class="input-group date">
+                                        <input type="text" class=" form-control hasdatepicker" id="date_fin" data-container="body" data-toggle="popover" data-trigger="focus" data-animation="true" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <!-- required for floating -->
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs tabs-right">
+                            <li class="active">
+                                <a href="#espacios" data-toggle="tab">
+                                    <span class="glyphicon glyphicon-picture text-primary" id="espaciosColor" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Lugar"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#tiempo" data-toggle="tab">
+                                    <span class="glyphicon glyphicon-time  " id="tiempoColor" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Fechas"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#eventos" data-toggle="tab">
+                                    <span class="glyphicon glyphicon-list-alt  " id="eventosColor" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Estados"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+                    <hr>
+                    <div>
+                        <button type="button" id="BuscarMapa" class="btn btn-success btn-block">
+                            <span class="glyphicon glyphicon-search"></span> Buscar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <div class="panel-footer">
+
+        <div class="row">
+            <div id="IconoCargado">
+                <center>
+                    <i class="fa fa-spinner fa-pulse fa-2x  fa-spin"></i> Cargando Consulta...
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="col-sm-2 col-md-2" id="panel_superDerecho" style="max-width:400px;min-width:360px;">
+    <div class="panel panel-primary">
+
+        <div class="panel-body">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#PieFondo" aria-controls="PieFondo" role="tab" data-toggle="tab">Fondos</a></li>
+                <li role="presentation"><a href="#PieSectores" aria-controls="PieSectores" role="tab" data-toggle="tab">Sectores</a></li>
+                <li role="presentation"><a href="#PieEstado" aria-controls="PieEstado" role="tab" data-toggle="tab">Estado</a></li>
+                <li role="presentation"><a href="#PieConcepto" aria-controls="PieConcepto" role="tab" data-toggle="tab">Concepto</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="PieFondo">
+                    <center>
+                        <div id="containerFondos" style="min-width: 250px; height: 250px; margin: 0 auto"></div>
+                    </center>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="PieSectores">
+                    <center>
+                        <div id="containerSectores" style="min-width: 250px; height: 250px; margin: 0 auto"></div>
+                    </center>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="PieEstado">
+                    <center>
+                        <div id="containerEstado" style="min-width: 250px; height: 250px; margin: 0 auto"></div>
+                    </center>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="PieConcepto">
+                    <center>
+                        <div id="containerConcepto" style="min-width: 250px; height: 250px; margin: 0 auto"></div>
+                    </center>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="carousel-panel-generic" style="width:230px">
+    <div id="myCarousel" class="carousel slide">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+        </ol>
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="row-fluid">
+                    <div class="col-sm-6 col-md-6" id="BaseESRIStreets" value="Streets">
+                        <a href="#" class="thumbnail">
+                            <img src="~/images/baselayers/calles.PNG" style="max-width:100%;">
+                            <div class="carousel-caption">
+                                <center>
+                                    <h6>ESRI Streets</h6>
+                                </center>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-6" id="BaseESRISatellite" value="Imagery">
+                        <a href="#" class="thumbnail">
+                            <img src="~/images/baselayers/satelite.PNG" style="max-width:100%;">
+                            <div class="carousel-caption">
+                                <center>
+                                    <h6 style="color:rgba(255, 255, 255,1)">ESRI Satelite</h6>
+                                </center>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/row-fluid-->
+            </div>
+            <!--/item-->
+            <div class="item">
+                <div class="row-fluid">
+                    <div class="col-sm-6 col-md-6" id="BaseESRITopo" value="Topographic">
+                        <a href="#" class="thumbnail">
+                            <img src="~/images/baselayers/topografic.PNG" style="max-width:100%;">
+                            <div class="carousel-caption">
+                                <center>
+                                    <h6>ESRI Topographic</h6>
+                                </center>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-6" id="BaseOSM" value="OSM">
+                        <a href="#" class="thumbnail">
+                            <img src="~/images/baselayers/OSM.PNG" style="max-width:100%;">
+                            <div class="carousel-caption">
+                                <center>
+                                    <h6>OSM</h6>
+                                </center>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                <!--/row-fluid-->
+            </div>
+            <!--/item-->
+        </div>
+        <!--/carousel-inner-->
+
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+    <!--/myCarousel-->
+</div>
+<div class='mouse-position'>
+    <b id='mousemove'><b />
+</div>
+@Scripts.Render("~/bundles/appMapGlobal")
+@Scripts.Render("~/bundles/appMap")
